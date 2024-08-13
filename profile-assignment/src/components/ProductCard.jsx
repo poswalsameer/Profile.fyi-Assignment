@@ -1,6 +1,10 @@
 import React from "react";
+import toast, { Toaster } from 'react-hot-toast';
 
 function ProductCard(props) {
+
+    const notify = () => toast('Added to cart');
+
   return (
     
     <div className="h-[28rem] w-[18.5rem] flex flex-col justify-center items-center bg-[#ccc5b9] rounded-lg border border-white gap-y-1" >

@@ -4,6 +4,8 @@ import './App.css'
 import ProductCard from './components/ProductCard'
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import toast, { Toaster } from 'react-hot-toast';
+
 
 function App() {
 
@@ -28,7 +30,39 @@ function App() {
 
   const addButtonClicked = ( product ) => {
     console.log("The product item clicked is: ", product);
-    setCartItems([...cartItems, { id: product.id, name: productNames[product.id - 1], price: product.price } ])
+
+    const existingProductIndex = cartItems.findIndex(item => item.id === product.id);
+
+    if (existingProductIndex !== -1) {
+      // If the product exists, create a new array with the updated count
+      setCartItems(cartItems.map((item, index) => {
+        if (index === existingProductIndex) {
+          return { ...item, count: item.count + 1 };
+        }
+        return item;
+      }));
+    } else {
+      // If the product doesn't exist, add the new product to the cart
+      setCartItems([...cartItems, { 
+        id: product.id, 
+        count: 1, 
+        name: productNames[product.id - 1], 
+        price: product.price, 
+        image : product.image
+      }]);
+    }
+
+    // cartItems.map( (product) => (
+    //   product.id ? setCartItems([...cartItems, { id: product.id, count: count+1, name: productNames[product.id - 1], price: product.price } ]) : setCartItems([...cartItems, { id: product.id, count: 1, name: productNames[product.id - 1], price: product.price } ])
+    // ) )
+
+    // setCartItems([...cartItems, { id: product.id, count: 1, name: productNames[product.id - 1], price: product.price } ])
+
+    toast('Added to cart', {
+      duration: 1000,
+      position: 'bottom-center',
+    
+    });
 
   }
 
@@ -45,6 +79,7 @@ function App() {
 
                 <div key={product.id}>
                   <ProductCard productImage={product.image} productName={productNames[product.id - 1]} productPrice={product.price} addButtonClicked={() => addButtonClicked(product)}  />
+                  <Toaster />
                 </div>
 
             ) ) }

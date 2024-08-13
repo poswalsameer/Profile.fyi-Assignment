@@ -1,4 +1,5 @@
 import React, {useState} from 'react'
+import CartLayout from './CartLayout';
 
 function Cart(props) {
 
@@ -6,11 +7,16 @@ function Cart(props) {
 
     return (
         <>
-            {cartItems.length === 0 ? (
+            {cartItems.length !== 0 ? (
                 <div>The cart is empty right now</div>
             ) : (
                 <>
                 
+                    <div className='h-full w-full flex flex-col justify-center items-center' >
+
+                        <CartLayout />
+
+                    </div>
                     
 
                 </>
