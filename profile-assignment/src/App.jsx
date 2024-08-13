@@ -3,6 +3,7 @@ import { useState } from 'react';
 import './App.css'
 import ProductCard from './components/ProductCard'
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 function App() {
 
@@ -61,8 +62,11 @@ function App() {
         </div>
 
         <button className='h-10 w-44 bg-red-500 m-16 rounded-lg font-semibold '>
-
-            GO TO CART
+            
+            <Link to="cart">
+              GO TO CART
+            </Link>
+            
 
         </button>
 
