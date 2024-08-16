@@ -5,6 +5,9 @@ import ProductCard from './components/ProductCard'
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
+import CartContextProvider from './contexts/CartContextProvider';
+import cartContext from './contexts/CartContext';
+import { useContext } from 'react';
 
 
 function App() {
@@ -14,7 +17,10 @@ function App() {
   const productNames = ["Laptop Backpack", "Slim Fit T-shirts", "Men's Jacket", "Men's Innerwear", "Chain Bracelet", "MicroPave", " White Gold Plated Ring", "Gold Plated Stainless Steel Earrings", "Portable External Hard Drive ", "1TB Internal SSD - SATA III", "Silicon Power 256GB SSD", "WD 4TB Gaming Drive", "Acer SB220Q bi 21.5 inches Full HD Monitor", "Samsung 49-Inch 144Hz Gaming Monitor", "BIYLACLESEN Women's 3-in-1 Snowboard Jacket ", " Women's Removable Hooded Faux Leather Jacket", "Women Windbreaker", " Women's Solid Short Sleeve Boat Neck V", "Opna Women's Short Sleeve Moisture", "Womens T Shirt Casual Cotton" ]
 
   const [products, setProducts] = useState([]);
-  const [cartItems, setCartItems] = useState([]);
+  // const [cartItems, setCartItems] = useState([]);
+
+  const {cartItems} = useContext(cartContext);
+  const {setCartItems} = useContext(cartContext);
 
   useEffect( () => {
 
@@ -27,6 +33,15 @@ function App() {
   }, [] )
 
   console.log(products);
+
+  useEffect(() => {
+    const savedCartItems = localStorage.getItem('cartItems');
+    if (savedCartItems) {
+        setCartItems(JSON.parse(savedCartItems));
+    }
+  }, []);
+
+  // localStorage.clear();
 
   const addButtonClicked = ( product ) => {
     console.log("The product item clicked is: ", product);
@@ -52,11 +67,7 @@ function App() {
       }]);
     }
 
-    // cartItems.map( (product) => (
-    //   product.id ? setCartItems([...cartItems, { id: product.id, count: count+1, name: productNames[product.id - 1], price: product.price } ]) : setCartItems([...cartItems, { id: product.id, count: 1, name: productNames[product.id - 1], price: product.price } ])
-    // ) )
-
-    // setCartItems([...cartItems, { id: product.id, count: 1, name: productNames[product.id - 1], price: product.price } ])
+    localStorage.setItem('cartItems', JSON.stringify(cartItems));
 
     toast('Added to cart', {
       duration: 1000,
