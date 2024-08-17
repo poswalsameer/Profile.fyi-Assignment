@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import cartContext from "../contexts/CartContext";
 import CartLayout from "./CartLayout";
+import toast, { Toaster } from "react-hot-toast";
 
 function Cart(props) {
   const { cartItems } = useContext(cartContext);
@@ -18,6 +19,13 @@ function Cart(props) {
   useEffect(() => {
     localStorage.setItem("cartItems", JSON.stringify(cartItems));
   }, [cartItems]);
+
+  // Calculate the total price whenever cartItems changes
+  useEffect(() => {
+    const total = cartItems.reduce((sum, item) => sum + item.price * item.count, 0);
+    setCartPrice(total);
+  }, [cartItems]);
+
 
   const addButtonClicked = (id) => {
         
@@ -48,6 +56,15 @@ function Cart(props) {
 
     }
 
+    const checkoutButtonClicked = () => {
+
+      toast("Thanks for shopping!", {
+        duration: 1000,
+        position: "top-center",
+      });
+
+    }
+
    
 
   return (
@@ -69,6 +86,25 @@ function Cart(props) {
                 />
               </div>
             ))}
+
+            <div className="flex flex-col justify-center items-center gap-y-5">
+
+              <div className="bg-[#ccc5b9] w-56 h-12 rounded-lg flex justify-center items-center gap-x-2 text-black font-bold" >
+                <div className="text-black font-semibold">Cart Value:</div> 
+                
+                <div>
+                  {cartPrice.toFixed(2)} <span className="text-green-600 font-extrabold">$</span> 
+                </div>
+              </div>
+
+              <button className="bg-black border border-[#ccc5b9] w-32 h-9 rounded-lg text-[#ccc5b9]" 
+              onClick={checkoutButtonClicked}
+              >
+                Checkout
+              </button>
+              <Toaster />
+
+            </div>
 
           </div>
         </>
