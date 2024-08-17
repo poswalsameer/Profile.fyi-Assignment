@@ -5,7 +5,6 @@ import ProductCard from "./components/ProductCard";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
-import CartContextProvider from "./contexts/CartContextProvider";
 import cartContext from "./contexts/CartContext";
 import { useContext } from "react";
 
@@ -65,6 +64,10 @@ function App() {
     }
   }, []);
 
+  useEffect(() => {
+    localStorage.setItem("cartItems", JSON.stringify(cartItems));
+  }, [cartItems]);
+
   const addButtonClicked = (product) => {
     console.log("The product item clicked is: ", product);
 
@@ -95,8 +98,6 @@ function App() {
         },
       ]);
     }
-
-    localStorage.setItem("cartItems", JSON.stringify(cartItems));
 
     toast("Added to cart", {
       duration: 1000,
